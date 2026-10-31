@@ -1,0 +1,325 @@
+// Football Club Platform — database schema
+// Designed for a newly founded club: everything starts empty and grows.
+// One club per installation (Club is a singleton row), many teams over time.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  HEAD_COACH
+  ASSISTANT_COACH
+  PLAYER
+}
+
+enum ApplicationType {
+  PLAYER
+  COACH
+}
+
+enum ApplicationStatus {
+  PENDING
+  INFO_REQUESTED
+  APPROVED
+  REJECTED
+}
+
+enum InquiryType {
+  GENERAL
+  SPONSORSHIP
+}
+
+enum FixtureStatus {
+  SCHEDULED
+  COMPLETED
+  POSTPONED
+  CANCELLED
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  UNAVAILABLE
+  MAYBE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(PLAYER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  playerProfile Player?       @relation("UserPlayer")
+  staffProfile  StaffMember?  @relation("UserStaff")
+  coachTeams    TeamCoach[]
+  newsPosts     NewsPost[]
+  auditLogs     AuditLog[]
+  coachNotes    CoachNote[]   @relation("NoteAuthor")
+  evaluations   Evaluation[]  @relation("EvalAuthor")
+  milestonesConfirmed Milestone[] @relation("MilestoneConfirmer")
+}
+
+/// Singleton row (id = "club") holding identity, branding and editable content.
+model Club {
+  id            String  @id @default("club")
+  name          String  @default("")
+  abbreviation  String  @default("")
+  crestUrl      String?
+  primaryColor  String  @default("#0b3d2e")
+  secondaryColor String @default("#c9a227")
+  font          String  @default("Inter")
+  foundingDate  DateTime?
+  location      String  @default("")
+  description   String  @default("")
+  mission       String  @default("")
+  philosophy    String  @default("")
+  values        String  @default("")
+  ambitions     String  @default("")
+  foundingStory String  @default("")
+  welcomeMessage String @default("")
+  contactEmail  String  @default("")
+  contactPhone  String  @default("")
+  address       String  @default("")
+  // Social links (empty string = hidden)
+  socialX       String  @default("")
+  socialInstagram String @default("")
+  socialFacebook  String @default("")
+  socialYoutube   String @default("")
+  socialTiktok    String @default("")
+  // Homepage banner image + toggles for optional public sections
+  bannerUrl     String?
+  showSponsors  Boolean @default(false)
+  setupStepsDone String @default("[]") // JSON array of completed setup step keys
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+/// Free-form editable website content blocks, keyed by slug (e.g. "home-hero-sub").
+model ContentBlock {
+  key       String   @id
+  title     String
+  body      String   @default("")
+  visible   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model Sponsor {
+  id        String @id @default(cuid())
+  name      String
+  logoUrl   String?
+  website   String @default("")
+  tier      String @default("Partner")
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id        String   @id @default(cuid())
+  name      String
+  ageGroup  String   @default("")
+  createdAt DateTime @default(now())
+
+  players  Player[]
+  coaches  TeamCoach[]
+  fixtures Fixture[]
+  sessions TrainingSession[]
+}
+
+model Player {
+  id           String    @id @default(cuid())
+  fullName     String
+  dateOfBirth  DateTime?
+  position     String    @default("")
+  squadNumber  Int?
+  biography    String    @default("")
+  photoUrl     String?
+  teamId       String?
+  team         Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  userId       String?   @unique
+  user         User?     @relation("UserPlayer", fields: [userId], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  attendance   Attendance[]
+  availability Availability[]
+  notes        CoachNote[]
+  evaluations  Evaluation[]
+
+  @@unique([teamId, squadNumber])
+}
+
+model StaffMember {
+  id        String   @id @default(cuid())
+  name      String
+  title     String   @default("")
+  biography String   @default("")
+  photoUrl  String?
+  userId    String?  @unique
+  user      User?    @relation("UserStaff", fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Which coach (User with a coach role) manages which team.
+model TeamCoach {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+}
+
+model Application {
+  id               String            @id @default(cuid())
+  type             ApplicationType
+  status           ApplicationStatus @default(PENDING)
+  fullName         String
+  email            String
+  phone            String            @default("")
+  dateOfBirth      DateTime?
+  preferredPosition String           @default("")
+  desiredRole      String            @default("") // for coach applications
+  experience       String            @default("")
+  previousClubs    String            @default("")
+  qualifications   String            @default("") // coaching badges etc.
+  additionalInfo   String            @default("")
+  // Safeguarding: required when the applicant is under 18
+  guardianName     String            @default("")
+  guardianEmail    String            @default("")
+  guardianConsent  Boolean           @default(false)
+  reviewNote       String            @default("")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Inquiry {
+  id        String      @id @default(cuid())
+  type      InquiryType @default(GENERAL)
+  name      String
+  email     String
+  subject   String      @default("")
+  message   String
+  handled   Boolean     @default(false)
+  createdAt DateTime    @default(now())
+}
+
+model Fixture {
+  id         String        @id @default(cuid())
+  teamId     String?
+  team       Team?         @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  opponent   String
+  date       DateTime
+  venue      String        @default("")
+  competition String       @default("")
+  status     FixtureStatus @default(SCHEDULED)
+  homeScore  Int?
+  awayScore  Int?
+  isHome     Boolean       @default(true)
+  formation  String        @default("")
+  lineup     String        @default("[]") // JSON array of player ids
+  report     String        @default("")
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  availability Availability[]
+}
+
+model NewsPost {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  category  String   @default("Club News")
+  published Boolean  @default(false)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TrainingSession {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  title     String   @default("Training")
+  date      DateTime
+  location  String   @default("")
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+
+  attendance Attendance[]
+}
+
+model Attendance {
+  id        String          @id @default(cuid())
+  sessionId String
+  session   TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  playerId  String
+  player    Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  present   Boolean         @default(false)
+
+  @@unique([sessionId, playerId])
+}
+
+model Availability {
+  id        String             @id @default(cuid())
+  playerId  String
+  player    Player             @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  fixtureId String
+  fixture   Fixture            @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
+  status    AvailabilityStatus
+  updatedAt DateTime           @updatedAt
+
+  @@unique([playerId, fixtureId])
+}
+
+/// Private to coaching staff and ownership — never shown to players.
+model CoachNote {
+  id        String   @id @default(cuid())
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation("NoteAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  note      String
+  createdAt DateTime @default(now())
+}
+
+model Evaluation {
+  id        String   @id @default(cuid())
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation("EvalAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  rating    Int      // 1–10 development rating
+  comments  String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Milestone {
+  key         String    @id
+  label       String
+  description String    @default("")
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  confirmedById String?
+  confirmedBy User?     @relation("MilestoneConfirmer", fields: [confirmedById], references: [id], onDelete: SetNull)
+  sortOrder   Int       @default(0)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String   @default("")
+  createdAt DateTime @default(now())
+}
