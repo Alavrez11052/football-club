@@ -3,7 +3,9 @@
 // One club per installation (Club is a singleton row), many teams over time.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // native = local dev + Vercel; rhel-openssl-3.0.x = Netlify/AWS Lambda functions
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
