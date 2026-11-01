@@ -59,7 +59,7 @@ export default async function CoachTrainingPage() {
                       <p className="mb-2 text-sm font-semibold text-gray-700">Attendance — tick everyone who attended ({presentSet.size}/{roster.length} recorded present)</p>
                       <div className="flex flex-wrap gap-2">
                         {roster.map((p) => (
-                          <label key={p.id} className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-sm">
+                          <label key={p.id} className="flex items-center gap-2 rounded-full bg-ink/5 px-3 py-1.5 text-sm">
                             <input type="checkbox" name="present" value={p.id} defaultChecked={presentSet.has(p.id)} /> {p.fullName}
                           </label>
                         ))}
