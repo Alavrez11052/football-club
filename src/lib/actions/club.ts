@@ -33,8 +33,8 @@ export async function saveSetupStep(formData: FormData) {
     if (file && file.size > 0) data.crestUrl = await saveUpload(file);
     if (formData.get("removeCrest") === "on") data.crestUrl = null;
   } else if (step === "colors") {
-    data.primaryColor = str(formData, "primaryColor") || "#0b3d2e";
-    data.secondaryColor = str(formData, "secondaryColor") || "#c9a227";
+    data.primaryColor = str(formData, "primaryColor") || "#651D32";
+    data.secondaryColor = str(formData, "secondaryColor") || "#171717";
   } else if (step === "founding") {
     const d = str(formData, "foundingDate");
     data.foundingDate = d ? new Date(d) : null;
@@ -68,8 +68,8 @@ export async function saveClubSettings(formData: FormData) {
   const data: Record<string, unknown> = {
     name: str(formData, "name"),
     abbreviation: str(formData, "abbreviation").toUpperCase().slice(0, 5),
-    primaryColor: str(formData, "primaryColor") || "#0b3d2e",
-    secondaryColor: str(formData, "secondaryColor") || "#c9a227",
+    primaryColor: str(formData, "primaryColor") || "#651D32",
+    secondaryColor: str(formData, "secondaryColor") || "#171717",
     font: str(formData, "font") || "Inter",
     foundingDate: founding ? new Date(founding) : null,
     location: str(formData, "location"),
