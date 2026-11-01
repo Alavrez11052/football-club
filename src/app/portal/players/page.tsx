@@ -49,7 +49,7 @@ export default async function PlayersPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.photoUrl} alt="" className="h-11 w-11 rounded-full object-cover" />
                 ) : (
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 font-display font-bold text-gray-500">{p.squadNumber ?? p.fullName.charAt(0)}</span>
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-burgundy/10 font-display font-bold text-burgundy">{p.squadNumber ?? p.fullName.charAt(0)}</span>
                 )}
                 <div>
                   <p className="font-display font-bold">{p.fullName}</p>
