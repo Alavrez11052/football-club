@@ -6,6 +6,11 @@ const config: Config = {
       colors: {
         club: "var(--club-primary)",
         club2: "var(--club-secondary)",
+        burgundy: "#651D32",
+        cream: "#F3EBDD",
+        ink: "#171717",
+        paper: "#FFFDF8",
+        sand: "#E7DCC2",
       },
       fontFamily: {
         sans: ["var(--club-font)", "system-ui", "sans-serif"],
