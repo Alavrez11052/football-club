@@ -9,7 +9,7 @@ const initial: FormState = {};
 export default function LoginPage() {
   const [state, action] = useFormState(login, initial);
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-cream px-4">
       <form action={action} className="card w-full max-w-sm space-y-4">
         <div className="text-center">
           <h1 className="font-display text-2xl font-bold">Club sign in</h1>
