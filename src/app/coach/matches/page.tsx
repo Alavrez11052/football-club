@@ -69,7 +69,7 @@ export default async function CoachMatchesPage() {
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {roster.map((p) => (
-                        <label key={p.id} className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-sm">
+                        <label key={p.id} className="flex items-center gap-2 rounded-full bg-ink/5 px-3 py-1.5 text-sm">
                           <input type="checkbox" name="lineup" value={p.id} defaultChecked={lineup.includes(p.id)} />
                           {p.fullName}{p.position ? ` (${p.position})` : ""}
                         </label>
