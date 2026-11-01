@@ -76,8 +76,8 @@ model Club {
   name          String  @default("")
   abbreviation  String  @default("")
   crestUrl      String?
-  primaryColor  String  @default("#0b3d2e")
-  secondaryColor String @default("#c9a227")
+  primaryColor  String  @default("#651D32")
+  secondaryColor String @default("#171717")
   font          String  @default("Inter")
   foundingDate  DateTime?
   location      String  @default("")
