@@ -24,7 +24,7 @@ export default async function HomePage() {
   return (
     <PublicShell club={club}>
       {/* Hero */}
-      <section className="relative overflow-hidden text-white" style={{ background: "var(--club-primary)" }}>
+      <section className="relative overflow-hidden text-cream" style={{ background: "var(--club-primary)" }}>
         {club.bannerUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={club.bannerUrl} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
@@ -32,16 +32,16 @@ export default async function HomePage() {
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center md:py-28">
           <div className="flex justify-center"><Crest club={club} size={110} /></div>
           <h1 className="mt-6 font-display text-5xl font-extrabold tracking-tight md:text-6xl">{name}</h1>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.3em] text-white/80">
+          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.3em] text-cream/80">
             {founded ? `Founded ${founded}` : "A newly founded football club"}{club.location ? ` · ${club.location}` : ""}
           </p>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-white/85">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-cream/85">
             {club.welcomeMessage || club.description ||
               "Welcome to the official home of our club. We are a newly founded football club building something from the ground up — and recruitment is now open."}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/apply" className="btn-accent">Apply to play</Link>
-            <Link href="/about" className="rounded-md border border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">About the club</Link>
+            <Link href="/about" className="rounded-full border border-cream/50 px-6 py-3 font-semibold text-cream transition hover:bg-cream/10">About the club</Link>
           </div>
           <SocialLinks club={club} className="mt-8 justify-center" />
         </div>
@@ -54,13 +54,13 @@ export default async function HomePage() {
           {club.mission ? (
             <div className="card">
               <h2 className="font-display text-2xl font-bold" style={{ color: "var(--club-primary)" }}>Our mission</h2>
-              <p className="mt-3 whitespace-pre-line leading-relaxed text-gray-700">{club.mission}</p>
+              <p className="mt-3 whitespace-pre-line leading-relaxed text-ink/75">{club.mission}</p>
             </div>
           ) : null}
           {club.philosophy ? (
             <div className="card">
               <h2 className="font-display text-2xl font-bold" style={{ color: "var(--club-primary)" }}>Our philosophy</h2>
-              <p className="mt-3 whitespace-pre-line leading-relaxed text-gray-700">{club.philosophy}</p>
+              <p className="mt-3 whitespace-pre-line leading-relaxed text-ink/75">{club.philosophy}</p>
             </div>
           ) : null}
         </section>
@@ -69,18 +69,18 @@ export default async function HomePage() {
       {/* Recruitment */}
       <section className="mx-auto max-w-6xl px-4 py-6">
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl p-7 text-white" style={{ background: "var(--club-primary)" }}>
+          <div className="rounded-[1.75rem] p-8 text-cream shadow-[0_16px_40px_-16px_rgba(101,29,50,0.5)]" style={{ background: "var(--club-primary)" }}>
             <h2 className="font-display text-2xl font-bold">Players wanted</h2>
-            <p className="mt-2 text-white/85">
+            <p className="mt-2 text-cream/85">
               {playerCount === 0
                 ? "We are building our very first squad. Whatever your level, if you want to be part of this club from day one, we want to hear from you."
                 : "Our squad is growing and we are still recruiting. Apply today to be considered for a place in the team."}
             </p>
             <Link href="/apply" className="btn-accent mt-5">Submit a player application</Link>
           </div>
-          <div className="rounded-xl border-2 p-7" style={{ borderColor: "var(--club-secondary)" }}>
-            <h2 className="font-display text-2xl font-bold text-gray-900">Coaches wanted</h2>
-            <p className="mt-2 text-gray-700">
+          <div className="rounded-[1.75rem] border-2 bg-paper p-8" style={{ borderColor: "var(--club-secondary)" }}>
+            <h2 className="font-display text-2xl font-bold text-ink">Coaches wanted</h2>
+            <p className="mt-2 text-ink/75">
               {staff.length === 0
                 ? "We are recruiting our first coaching team to lead the club on the pitch. Qualified or aspiring coaches are welcome to apply."
                 : "We are expanding our coaching team. Apply to join the staff and help build this club."}
@@ -104,12 +104,12 @@ export default async function HomePage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.photoUrl} alt={p.fullName} className="mx-auto h-24 w-24 rounded-full object-cover" />
                 ) : (
-                  <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 font-display text-2xl font-bold text-gray-500">
+                  <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-burgundy/10 font-display text-2xl font-bold text-burgundy">
                     {p.squadNumber ?? p.fullName.charAt(0)}
                   </div>
                 )}
                 <p className="mt-3 font-display font-bold">{p.fullName}</p>
-                <p className="text-sm text-gray-500">{p.position || "Player"}{p.squadNumber ? ` · #${p.squadNumber}` : ""}</p>
+                <p className="text-sm text-ink/55">{p.position || "Player"}{p.squadNumber ? ` · #${p.squadNumber}` : ""}</p>
               </div>
             ))}
           </div>
@@ -162,9 +162,9 @@ export default async function HomePage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={s.logoUrl} alt={s.name} className="h-14 object-contain" />
                 ) : (
-                  <span className="font-display text-xl font-bold text-gray-700">{s.name}</span>
+                  <span className="font-display text-xl font-bold text-ink/70">{s.name}</span>
                 )}
-                <span className="text-xs uppercase tracking-widest text-gray-400">{s.tier}</span>
+                <span className="text-xs uppercase tracking-widest text-ink/40">{s.tier}</span>
               </a>
             ))}
           </div>

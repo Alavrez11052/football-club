@@ -20,8 +20,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const club = await getClub().catch(() => null);
   const font = club?.font && FONT_STACKS[club.font] ? FONT_STACKS[club.font] : FONT_STACKS.Inter;
   const style = {
-    "--club-primary": club?.primaryColor || "#0b3d2e",
-    "--club-secondary": club?.secondaryColor || "#c9a227",
+    "--club-primary": club?.primaryColor || "#651D32",
+    "--club-secondary": club?.secondaryColor || "#171717",
     "--club-font": font,
     "--club-font-display": font,
   } as React.CSSProperties;
