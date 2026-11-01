@@ -18,7 +18,7 @@ export default async function SquadPage() {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={p.photoUrl} alt={p.fullName} className="mx-auto h-28 w-28 rounded-full object-cover" />
       ) : (
-        <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-gray-100 font-display text-3xl font-bold text-gray-500">
+        <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-burgundy/10 font-display text-3xl font-bold text-burgundy">
           {p.squadNumber ?? p.fullName.charAt(0)}
         </div>
       )}
