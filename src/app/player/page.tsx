@@ -96,7 +96,7 @@ export default async function PlayerHomePage() {
                       <form key={s} action={setAvailability}>
                         <input type="hidden" name="fixtureId" value={f.id} />
                         <input type="hidden" name="status" value={s} />
-                        <button className={`rounded-full px-3 py-1 text-xs font-bold ${current === s ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600"}`}>
+                        <button className={`rounded-full px-3 py-1 text-xs font-bold ${current === s ? "bg-ink text-cream" : "bg-ink/5 text-ink/60"}`}>
                           {s === "AVAILABLE" ? "Available" : s === "MAYBE" ? "Maybe" : "Unavailable"}
                         </button>
                       </form>
