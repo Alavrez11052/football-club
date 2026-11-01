@@ -9,7 +9,7 @@ export function Crest({ club, size = 44 }: { club: Club; size?: number }) {
   const initials = (club.abbreviation || club.name || "FC").slice(0, 3).toUpperCase();
   return (
     <div
-      className="flex items-center justify-center rounded-full font-bold text-white"
+      className="flex items-center justify-center rounded-full font-bold text-cream"
       style={{ width: size, height: size, background: "var(--club-primary)", fontSize: size * 0.32, border: "2px solid var(--club-secondary)" }}
       aria-label="Club crest placeholder"
     >
@@ -20,9 +20,9 @@ export function Crest({ club, size = 44 }: { club: Club; size?: number }) {
 
 export function EmptyState({ title, children, action }: { title: string; children?: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center">
-      <h3 className="font-display text-xl font-bold text-gray-900">{title}</h3>
-      {children ? <div className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-gray-600">{children}</div> : null}
+    <div className="rounded-[2rem] border border-dashed border-[#CDBFA0] bg-paper px-6 py-12 text-center">
+      <h3 className="font-display text-xl font-bold text-ink">{title}</h3>
+      {children ? <div className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink/60">{children}</div> : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>
   );
@@ -30,10 +30,10 @@ export function EmptyState({ title, children, action }: { title: string; childre
 
 export function PageHero({ title, sub }: { title: string; sub?: string }) {
   return (
-    <section className="text-white" style={{ background: "var(--club-primary)" }}>
+    <section className="text-cream" style={{ background: "var(--club-primary)" }}>
       <div className="mx-auto max-w-6xl px-4 py-14">
         <h1 className="font-display text-4xl font-extrabold tracking-tight md:text-5xl">{title}</h1>
-        {sub ? <p className="mt-3 max-w-2xl text-white/80">{sub}</p> : null}
+        {sub ? <p className="mt-3 max-w-2xl text-cream/80">{sub}</p> : null}
       </div>
       <div className="h-1.5" style={{ background: "var(--club-secondary)" }} />
     </section>
@@ -72,13 +72,13 @@ export function FixtureCard({ f, clubName }: { f: { id: string; opponent: string
         <p className="mt-1 font-display text-lg font-bold">
           {clubName} {done ? `${f.homeScore ?? 0} – ${f.awayScore ?? 0}` : "vs"} {f.opponent}
         </p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-ink/55">
           {when.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", year: "numeric" })} ·{" "}
           {when.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
           {f.venue ? ` · ${f.venue}` : ""}
         </p>
       </div>
-      <span className={`rounded-full px-3 py-1 text-xs font-bold ${done ? "bg-gray-900 text-white" : "bg-amber-100 text-amber-900"}`}>
+      <span className={`rounded-full px-3 py-1 text-xs font-bold ${done ? "bg-ink text-cream" : "bg-burgundy/10 text-burgundy"}`}>
         {done ? "Full time" : f.status === "SCHEDULED" ? "Upcoming" : f.status.toLowerCase()}
       </span>
     </div>
@@ -91,8 +91,8 @@ export function NewsCard({ post }: { post: { id: string; title: string; body: st
       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--club-primary)" }}>
         {post.category} · {new Date(post.createdAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}
       </p>
-      <h3 className="mt-2 font-display text-xl font-bold text-gray-900">{post.title}</h3>
-      <p className="mt-2 line-clamp-3 text-sm text-gray-600">{post.body}</p>
+      <h3 className="mt-2 font-display text-xl font-bold text-ink">{post.title}</h3>
+      <p className="mt-2 line-clamp-3 text-sm text-ink/65">{post.body}</p>
       <span className="mt-3 inline-block text-sm font-semibold" style={{ color: "var(--club-primary)" }}>Read more →</span>
     </Link>
   );
