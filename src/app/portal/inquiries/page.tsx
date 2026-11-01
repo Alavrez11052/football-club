@@ -15,7 +15,7 @@ export default async function InquiriesPage() {
         inquiries.map((i) => (
           <article key={i.id} className={`card space-y-2 ${i.handled ? "opacity-60" : ""}`}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="font-display font-bold">{i.subject || "(No subject)"} <span className="ml-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-600">{i.type}</span></p>
+              <p className="font-display font-bold">{i.subject || "(No subject)"} <span className="ml-1 rounded-full bg-ink/5 px-2 py-0.5 text-xs font-bold text-ink/60">{i.type}</span></p>
               <form action={setInquiryHandled}>
                 <input type="hidden" name="id" value={i.id} />
                 <input type="hidden" name="handled" value={i.handled ? "false" : "true"} />
