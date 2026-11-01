@@ -29,7 +29,7 @@ export default async function StaffPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={s.photoUrl} alt={s.name} className="mx-auto h-28 w-28 rounded-full object-cover" />
                 ) : (
-                  <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-gray-100 font-display text-3xl font-bold text-gray-500">{s.name.charAt(0)}</div>
+                  <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-burgundy/10 font-display text-3xl font-bold text-burgundy">{s.name.charAt(0)}</div>
                 )}
                 <p className="mt-3 font-display text-lg font-bold">{s.name}</p>
                 <p className="text-sm font-medium" style={{ color: "var(--club-primary)" }}>{s.title}</p>
