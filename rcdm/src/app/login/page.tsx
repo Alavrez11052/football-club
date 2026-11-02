@@ -8,7 +8,7 @@ export default async function LoginPage({ searchParams }: { searchParams: { erro
   const [settings, anyUser] = await Promise.all([getSettings(), hasAnyUser()]);
   return (
     <div className="flex min-h-screen items-center justify-center bg-navy-950 px-4 py-10">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
+      <div className="animate-fade-up w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
         <p className="text-sm font-bold uppercase tracking-widest text-navy-600">{settings.shortName}</p>
         <h1 className="mt-2 text-2xl font-bold text-navy-900">Employee login</h1>
         <p className="mt-1 text-sm text-slate-500">
