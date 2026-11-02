@@ -46,7 +46,7 @@ export default function PortalShell({
         </div>
         <nav className="space-y-1 px-3 pb-3">
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href} className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-navy-100 transition hover:bg-white/10 hover:text-white">
+            <Link key={item.href} href={item.href} className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-navy-100 transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:text-white">
               {item.label}
             </Link>
           ))}
@@ -56,7 +56,7 @@ export default function PortalShell({
                 {user.role === "ADMIN" ? "Administration" : "Management"}
               </p>
               {(user.role === "ADMIN" ? ADMIN_NAV : ADMIN_NAV.filter((i) => i.href !== "/portal/admin/personnel" && i.href !== "/portal/admin/settings")).map((item) => (
-                <Link key={item.href} href={item.href} className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-navy-100 transition hover:bg-white/10 hover:text-white">
+                <Link key={item.href} href={item.href} className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-navy-100 transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:text-white">
                   {item.label}
                 </Link>
               ))}
@@ -79,7 +79,7 @@ export default function PortalShell({
           </div>
         </div>
       </aside>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 lg:px-8">{children}</main>
+      <main className="animate-fade-in mx-auto w-full max-w-5xl flex-1 px-4 py-8 lg:px-8">{children}</main>
     </div>
   );
 }

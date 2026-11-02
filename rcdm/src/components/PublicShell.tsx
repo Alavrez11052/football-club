@@ -33,7 +33,7 @@ export default function PublicShell({
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-navy-100 transition hover:bg-white/10 hover:text-white"
+                className="nav-link rounded-full px-3.5 py-2 text-sm font-medium text-navy-100 transition hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>
@@ -45,7 +45,7 @@ export default function PublicShell({
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10">{children}</main>
+      <main className="animate-fade-in mx-auto w-full max-w-6xl flex-1 px-4 py-10">{children}</main>
 
       <footer className="bg-navy-950 text-navy-200">
         <div className="mx-auto flex max-w-6xl flex-wrap gap-x-10 gap-y-4 px-4 py-8 text-sm">
