@@ -23,15 +23,15 @@ export default async function DashboardPage() {
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <div className="card">
+        <div className="card animate-fade-up">
           <p className="text-3xl font-bold text-navy-900">{activeAssignments.length}</p>
           <p className="mt-1 text-sm text-slate-500">Active assignments</p>
         </div>
-        <div className="card">
+        <div className="card animate-fade-up anim-delay-1">
           <p className="text-3xl font-bold text-navy-900">{training.filter((t) => t.status === "Completed").length}</p>
           <p className="mt-1 text-sm text-slate-500">Training courses completed</p>
         </div>
-        <div className="card">
+        <div className="card animate-fade-up anim-delay-2">
           <p className="text-3xl font-bold text-navy-900">{announcements.length}</p>
           <p className="mt-1 text-sm text-slate-500">Internal announcements</p>
         </div>
