@@ -2,25 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-mist text-slate-800 antialiased;
 }
 
+::selection {
+  background: #b3cde6;
+}
+
+/* ---------- Motion ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroSheen {
+  from {
+    transform: translateX(-12%) translateY(-6%);
+  }
+  to {
+    transform: translateX(10%) translateY(6%);
+  }
+}
+
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-navy-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-800 disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-full bg-navy-700 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-px hover:bg-navy-800 hover:shadow-md active:translate-y-0 active:scale-[0.98] disabled:opacity-50;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full border border-navy-200 bg-white px-5 py-2.5 text-sm font-semibold text-navy-800 transition hover:bg-navy-50;
+    @apply inline-flex items-center justify-center rounded-full border border-navy-200 bg-white px-5 py-2.5 text-sm font-semibold text-navy-800 transition-all duration-200 hover:-translate-y-px hover:bg-navy-50 hover:shadow-sm active:translate-y-0 active:scale-[0.98];
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700;
+    @apply inline-flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-red-700 active:scale-[0.98];
   }
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md;
   }
   .input {
-    @apply w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-navy-500 focus:ring-2 focus:ring-navy-100;
+    @apply w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 focus:border-navy-500 focus:ring-2 focus:ring-navy-100;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium text-slate-700;
@@ -33,5 +71,86 @@ body {
   }
   .section-title {
     @apply text-2xl font-bold tracking-tight text-navy-900;
+  }
+
+  /* Page-load entrance */
+  .animate-fade-up {
+    opacity: 0;
+    animation: fadeUp 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.45s ease both;
+  }
+  .anim-delay-1 { animation-delay: 0.08s; }
+  .anim-delay-2 { animation-delay: 0.16s; }
+  .anim-delay-3 { animation-delay: 0.24s; }
+  .anim-delay-4 { animation-delay: 0.32s; }
+  .anim-delay-5 { animation-delay: 0.4s; }
+  .anim-delay-6 { animation-delay: 0.48s; }
+
+  /* Scroll-triggered reveal (see components/Reveal.tsx) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Slow-moving soft light inside the navy hero */
+  .hero-sheen {
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(ellipse 45% 60% at 30% 40%, rgba(255, 255, 255, 0.13), transparent 65%);
+    animation: heroSheen 14s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* Nav link underline that grows from the left */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0.875rem;
+    right: 0.875rem;
+    bottom: 0.35rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-fade-up,
+  .animate-fade-in,
+  .hero-sheen {
+    animation: none;
+    opacity: 1;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card,
+  .btn-primary,
+  .btn-ghost {
+    transition: none;
   }
 }
