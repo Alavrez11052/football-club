@@ -16,6 +16,8 @@ enum Role {
   EMPLOYEE
   SUPERVISOR
   ADMIN
+
+  @@map("RcdmRole")
 }
 
 model User {
@@ -35,6 +37,8 @@ model User {
   assignments     Assignment[]
   trainingRecords TrainingRecord[]
   announcements   Announcement[]   @relation("AnnouncementAuthor")
+
+  @@map("rcdm_users")
 }
 
 /// Singleton row (id = "site") holding identity and all editable public content.
@@ -51,6 +55,8 @@ model SiteSettings {
   contactPhone   String @default("")
   address        String @default("Ridgeway County, Indiana")
   footerNote     String @default("For life-threatening emergencies, always call 911.")
+
+  @@map("rcdm_site_settings")
 }
 
 model Announcement {
@@ -62,6 +68,8 @@ model Announcement {
   authorId  String?
   author    User?    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
+
+  @@map("rcdm_announcements")
 }
 
 model Operation {
@@ -76,6 +84,8 @@ model Operation {
   createdAt   DateTime @default(now())
 
   assignments Assignment[]
+
+  @@map("rcdm_operations")
 }
 
 model Assignment {
@@ -89,6 +99,8 @@ model Assignment {
   createdAt   DateTime  @default(now())
 
   @@unique([operationId, userId])
+
+  @@map("rcdm_assignments")
 }
 
 model TrainingRecord {
@@ -101,6 +113,8 @@ model TrainingRecord {
   expiresOn   DateTime?
   notes       String    @default("")
   createdAt   DateTime  @default(now())
+
+  @@map("rcdm_training_records")
 }
 
 model Inquiry {
@@ -109,4 +123,6 @@ model Inquiry {
   email     String
   message   String
   createdAt DateTime @default(now())
+
+  @@map("rcdm_inquiries")
 }
