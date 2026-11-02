@@ -1,5 +1,4 @@
 [build]
-  base = "rcdm"
   command = "prisma generate && prisma migrate deploy && next build"
   publish = ".next"
 
