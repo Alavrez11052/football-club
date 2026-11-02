@@ -1,0 +1,112 @@
+// Ridgeway County Disaster Management (RCDM)
+// Same proven stack as the football club platform: Prisma + PostgreSQL.
+// Everything starts empty and is editable from the admin portal.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EMPLOYEE
+  SUPERVISOR
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(EMPLOYEE)
+  rank         String   @default("")
+  position     String   @default("")
+  phone        String   @default("")
+  bio          String   @default("")
+  status       String   @default("Active") // Active / On Leave / Inactive
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  assignments     Assignment[]
+  trainingRecords TrainingRecord[]
+  announcements   Announcement[]   @relation("AnnouncementAuthor")
+}
+
+/// Singleton row (id = "site") holding identity and all editable public content.
+model SiteSettings {
+  id             String @id @default("site")
+  orgName        String @default("Ridgeway County Disaster Management")
+  shortName      String @default("RCDM")
+  tagline        String @default("Prepared. Responsive. Community first.")
+  heroText       String @default("")
+  mission        String @default("")
+  aboutText      String @default("")
+  operationsText String @default("")
+  contactEmail   String @default("")
+  contactPhone   String @default("")
+  address        String @default("Ridgeway County, Indiana")
+  footerNote     String @default("For life-threatening emergencies, always call 911.")
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  body      String   @default("")
+  audience  String   @default("internal") // internal / public
+  pinned    Boolean  @default(false)
+  authorId  String?
+  author    User?    @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}
+
+model Operation {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  location    String   @default("")
+  status      String   @default("Planning") // Planning / Active / Completed / Cancelled
+  visibility  String   @default("internal") // public / internal
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime @default(now())
+
+  assignments Assignment[]
+}
+
+model Assignment {
+  id          String    @id @default(cuid())
+  operationId String
+  operation   Operation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleOnOp    String    @default("")
+  status      String    @default("Assigned") // Assigned / Confirmed / Completed
+  createdAt   DateTime  @default(now())
+
+  @@unique([operationId, userId])
+}
+
+model TrainingRecord {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      String
+  status      String    @default("Completed") // Completed / In Progress / Expired
+  completedOn DateTime?
+  expiresOn   DateTime?
+  notes       String    @default("")
+  createdAt   DateTime  @default(now())
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
