@@ -1,13 +1,13 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('EMPLOYEE', 'SUPERVISOR', 'ADMIN');
+CREATE TYPE "RcdmRole" AS ENUM ('EMPLOYEE', 'SUPERVISOR', 'ADMIN');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "rcdm_users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'EMPLOYEE',
+    "role" "RcdmRole" NOT NULL DEFAULT 'EMPLOYEE',
     "rank" TEXT NOT NULL DEFAULT '',
     "position" TEXT NOT NULL DEFAULT '',
     "phone" TEXT NOT NULL DEFAULT '',
@@ -16,11 +16,11 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "SiteSettings" (
+CREATE TABLE "rcdm_site_settings" (
     "id" TEXT NOT NULL DEFAULT 'site',
     "orgName" TEXT NOT NULL DEFAULT 'Ridgeway County Disaster Management',
     "shortName" TEXT NOT NULL DEFAULT 'RCDM',
@@ -34,11 +34,11 @@ CREATE TABLE "SiteSettings" (
     "address" TEXT NOT NULL DEFAULT 'Ridgeway County, Indiana',
     "footerNote" TEXT NOT NULL DEFAULT 'For life-threatening emergencies, always call 911.',
 
-    CONSTRAINT "SiteSettings_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_site_settings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Announcement" (
+CREATE TABLE "rcdm_announcements" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "body" TEXT NOT NULL DEFAULT '',
@@ -47,11 +47,11 @@ CREATE TABLE "Announcement" (
     "authorId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Announcement_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_announcements_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Operation" (
+CREATE TABLE "rcdm_operations" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
@@ -62,11 +62,11 @@ CREATE TABLE "Operation" (
     "endsAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Operation_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_operations_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Assignment" (
+CREATE TABLE "rcdm_assignments" (
     "id" TEXT NOT NULL,
     "operationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -74,11 +74,11 @@ CREATE TABLE "Assignment" (
     "status" TEXT NOT NULL DEFAULT 'Assigned',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Assignment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_assignments_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "TrainingRecord" (
+CREATE TABLE "rcdm_training_records" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "course" TEXT NOT NULL,
@@ -88,35 +88,35 @@ CREATE TABLE "TrainingRecord" (
     "notes" TEXT NOT NULL DEFAULT '',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "TrainingRecord_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_training_records_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Inquiry" (
+CREATE TABLE "rcdm_inquiries" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "message" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Inquiry_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "rcdm_inquiries_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "rcdm_users_email_key" ON "rcdm_users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Assignment_operationId_userId_key" ON "Assignment"("operationId", "userId");
+CREATE UNIQUE INDEX "rcdm_assignments_operationId_userId_key" ON "rcdm_assignments"("operationId", "userId");
 
 -- AddForeignKey
-ALTER TABLE "Announcement" ADD CONSTRAINT "Announcement_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "rcdm_announcements" ADD CONSTRAINT "rcdm_announcements_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "rcdm_users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_operationId_fkey" FOREIGN KEY ("operationId") REFERENCES "Operation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "rcdm_assignments" ADD CONSTRAINT "rcdm_assignments_operationId_fkey" FOREIGN KEY ("operationId") REFERENCES "rcdm_operations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Assignment" ADD CONSTRAINT "Assignment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "rcdm_assignments" ADD CONSTRAINT "rcdm_assignments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "rcdm_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TrainingRecord" ADD CONSTRAINT "TrainingRecord_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "rcdm_training_records" ADD CONSTRAINT "rcdm_training_records_userId_fkey" FOREIGN KEY ("userId") REFERENCES "rcdm_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
