@@ -12,7 +12,7 @@ export default async function ContactPage({
   const settings = await getSettings();
   return (
     <PublicShell settings={settings}>
-      <h1 className="text-3xl font-bold tracking-tight text-navy-900">Contact</h1>
+      <h1 className="animate-fade-up text-3xl font-bold tracking-tight text-navy-900">Contact</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-slate-600">
         Questions about preparedness, operations, or volunteering — send us a message. For life-threatening emergencies, call 911.
       </p>
